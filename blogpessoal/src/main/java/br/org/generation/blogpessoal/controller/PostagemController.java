@@ -22,7 +22,7 @@ import br.org.generation.blogpessoal.repository.PostagemRepository;
 
 @RestController //Define que é uma classe controladora
 @RequestMapping("/postagens") //Define "postagens" como 
-@CrossOrigin(origins = "*", allowedHeaders = "*") //Ligação com frontend Informa que pode ser qualquer origem para ter acesso a aplicação
+@CrossOrigin(origins = "*", allowedHeaders = "*")  //Ligação com frontend Informa que pode ser qualquer origem para ter acesso a aplicação
 public class PostagemController {
 	
 	@Autowired //Spring decide ai os dados utilizamos manualmente Postagem postagem = new postagem(1(id),yyyyy(titulo)...) 
