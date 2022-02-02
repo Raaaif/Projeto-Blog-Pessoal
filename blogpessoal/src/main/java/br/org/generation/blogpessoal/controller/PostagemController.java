@@ -20,18 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 import br.org.generation.blogpessoal.model.Postagem;
 import br.org.generation.blogpessoal.repository.PostagemRepository;
 
-@RestController //Define que é uma classe controladora
-@RequestMapping("/postagens") //Define "postagens" como 
-@CrossOrigin(origins = "*", allowedHeaders = "*")  //Ligação com frontend Informa que pode ser qualquer origem para ter acesso a aplicação
+@RestController
+@RequestMapping("/postagens")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
 	
-	@Autowired //Spring decide ai os dados utilizamos manualmente Postagem postagem = new postagem(1(id),yyyyy(titulo)...) 
+	@Autowired
 	private PostagemRepository postagemRepository;
 	
 	@GetMapping
-	public ResponseEntity<List<Postagem>> getAll(){  //Retorne uma resposta http + uma Lista de todos os itens dentro da classe Postagem
-		return ResponseEntity.ok(postagemRepository.findAll()); //Vai retornar um ok mais os dados que quero consultar = select * from tb_postagens
+	public ResponseEntity <List<Postagem>> getAll(){
+		return ResponseEntity.ok(postagemRepository.findAll());
 		
+		//select * from tb_postagens;
 	}
 	
 	@GetMapping("/{id}")
@@ -40,16 +41,27 @@ public class PostagemController {
 				.map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.notFound().build());
 	}
+	/*Usando IF
+	    public ResponseEntity <Optional<Postagem>> getById(@PathVariable Long id)
+		Optional <Postagem> resposta = postagemRepository.findById(id);
+		
+		if(resposta.isPresent())
+			ResponseEntity.ok(resposta);
+		else
+			ResponseEntity.notFound().build();	
+	 */
+		
 	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<Postagem>> getByTitulo(@PathVariable String titulo){  
+	public ResponseEntity <List<Postagem>> getByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
-	}
+	
+ 	}
 	
 	@PostMapping
 	public ResponseEntity <Postagem> postPostagem(@Valid @RequestBody Postagem postagem){
 		return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem));
 	}
-	
+
 	@PutMapping
 	public ResponseEntity <Postagem> putPostagem(@Valid @RequestBody Postagem postagem){
 		//return ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem));
@@ -58,14 +70,14 @@ public class PostagemController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("{id}")
 	public ResponseEntity <?> deletePostagem(@PathVariable Long id){
 		return postagemRepository.findById(id)
-				.map(resposta ->{
+				.map(resposta ->{ 
 					postagemRepository.deleteById(id);
 					return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 				})
 				.orElse(ResponseEntity.notFound().build());
-	}
 	
+	}
 }

@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 import br.org.generation.blogpessoal.model.Postagem;
 
 @Repository
-public interface PostagemRepository extends JpaRepository<Postagem, Long>{ //herança de JPARepository  -  Qual tabela do Banco de dados os métodos irão trabalhar? No caso tabela postagem e PK Long
+public interface PostagemRepository extends JpaRepository<Postagem, Long>{
+	
+	List<Postagem> findAllByTituloContainingIgnoreCase(String titulo);
+	
+	/*select * from tb_postagens where titulo like "%titulo%"*/
 
-	List<Postagem> findAllByTituloContainingIgnoreCase(String titulo); //Como se fosse Select * from tb_postagens Where titulo like"%titulo%;" 
 }
